@@ -280,7 +280,7 @@ terminal String     TEXTO;
 terminal String     ESCREVAL;
 
 /* Non terminals */
-non terminal             program, list_command, command, assign , declare_variable, writel, readl,if,elsepart,for,while,print,escreval;
+non terminal             program, list_command, command, assign , declare_variable, writel, readl,if,elsepart,for,while,print,escreval,final;
 non terminal  String    expr,tipo,vetor;      
 
 /* Precedences */
@@ -312,9 +312,9 @@ command ::=    declare_variable
             |  if
             |  for
             |  while
-            |  escreval         
+            |  escreval  
+            |  final       
             ;
-          
 
 tipo ::=      DECLINT:t   {: RESULT = "INT"  ;     :}
             | DECLFLOAT:t {: RESULT = "FLOAT";     :}
@@ -377,7 +377,12 @@ while       ::= ENQUANTO expr:value {: emit_while(value); :}
                 FACA                {: emit_startblock();  :}
                 list_command
                 FIMENQUANTO         {:  emit_endblock(); :}
-            ;     
+            ;  
+
+final       ::= FINAL        {:emit_return();:}
+               SEMI          {: emit_semi();:}
+               ;
+
 
                                                 
                                                       

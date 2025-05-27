@@ -81,6 +81,7 @@ comment =  {commentinicio}{commentbody}{commentfim} | \/\/[a-zA-Z0-9 \t]*
     "e"                {  return symbol(sym.E);        }
     "ou"               {  return symbol(sym.OU);       }
     "escreval"         { return symbol(sym.ESCREVAL);  }
+    "final"             { return symbol(sym.FINAL);    }
  
     {integer}      { return symbol(sym.INTT,yytext()); }
     {float}    { return symbol(sym.FLOATT, yytext()); }
