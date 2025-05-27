@@ -538,8 +538,7 @@ public class parser extends java_cup.runtime.lr_parser {
 
     /* m??todos auxiliares */
     public String checkExpr(String e1, String e2){   
-        String tipoE1 = "", tipoE2 = "";         
-                                          
+        String tipoE1 = "", tipoE2 = "";                                            
 
         if(e1 != null){
 

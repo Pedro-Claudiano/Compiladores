@@ -1,0 +1,13 @@
+# Ignore arquivos de compilação
+*.class
+*.jar
+
+# Pastas comuns de build
+/build/
+/out/
+/target/
+
+# Arquivos temporários de IDEs
+*.log
+*.tmp
+*.swp
