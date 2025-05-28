@@ -483,7 +483,7 @@ public class parser extends java_cup.runtime.lr_parser {
       public void emit_textoN(String txt){
         
         format_code(pos);
-        System.out.print("printf(\"" + txt + "\\n\");");
+        System.out.print("printf(\"" + txt + "\\n\")");
 
       }
 

@@ -166,7 +166,7 @@ parser code {:
       public void emit_textoN(String txt){
         
         format_code(pos);
-        System.out.print("printf(\"" + txt + "\\n\");");
+        System.out.print("printf(\"" + txt + "\\n\")");
 
       }
 
