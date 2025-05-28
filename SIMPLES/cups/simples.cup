@@ -63,8 +63,6 @@ parser code {:
        System.out.print("\nint main()");
     }
 
-    //Deque<String> pilhaAuxiliar = new ArrayDeque<String>();
-
     public void emit_startblock(){
        System.out.print("{");
        format_code(pos++);
@@ -135,6 +133,16 @@ parser code {:
         System.out.print(id + "=" + value); 
     }
 
+    public void emit_txt(String txt) {
+      format_code(pos);
+      System.out.print("printf(\""+ txt +"\")");
+    }
+
+    public void emit_escreval(String txt) {
+      format_code(pos);
+      System.out.print("printf(\""+ txt +"\\n\")");
+    }
+
     public void emit_escreva(String id){
 
         format_code(pos);  
@@ -148,28 +156,10 @@ parser code {:
 
          if(tipo.equals("INT")) {
            System.out.print("printf(\"\\n%d\"," + id + ")") ;
-         }if(tipo.equals("STRING")){
-          System.out.print("printf(\"" + id + "\"" );
-         }
-         else {
+         } else {
             System.out.print("printf(\"\\n%f\"," + id + ")") ;
          }   
       }
-
-      public void emit_texto(String txt) {
-
-      format_code(pos);
-
-      System.out.print("printf(\"" + txt + "\")");
-
-}
-      public void emit_textoN(String txt){
-        
-        format_code(pos);
-        System.out.print("printf(\"" + txt + "\\n\")");
-
-      }
-
 
     public void emit_leia(String id){
 
@@ -206,16 +196,20 @@ parser code {:
 
       format_code(pos); 
       TabelaSimbolo t1 = dicionario.get(id);  
+      if(t1 == null) {
+         report_fatal_error("Variável não declarada [" + id + "]",null);
+      }    
 
-      int passo=Integer.parseInt(n3);
-      if(passo >=0){
-         System.out.print("for("+ id +" = "+ n1 +";"+ id +" < "+ n2 +";"+ id+ " += "+ n3 +")");
-      }else{
-         System.out.print("for("+ id +" = "+ n1 +";"+ id +" > "+ n2 +";"+ id+ " += "+ n3 +")");
+      int passo = Integer.parseInt(n3);
+      if(passo >= 0){
+        System.out.print("for("+ id +" = "+ n1 +";"+ id +" < "+ n2 +";"+ id+ " += "+ n3 +")");
+      } else {
+        System.out.print("for("+ id +" = "+ n1 +";"+ id +" > "+ n2 +";"+ id+ " += "+ n3 +")");
       }
+         
     }
 
-    public void emit_while(String value){
+   public void emit_while(String value){
         format_code(pos); 
          TabelaSimbolo t1 = dicionario.get(value);  
       if(t1 == null) {
@@ -226,10 +220,9 @@ parser code {:
 
     /* métodos auxiliares */
     public String checkExpr(String e1, String e2){   
-        String tipoE1 = "", tipoE2 = "";                                            
+        String tipoE1 = "", tipoE2 = "";                                                      
 
         if(e1 != null){
-
             TabelaSimbolo t1 = dicionario.get(e1);  
 
              if(t1 == null) {
@@ -273,7 +266,7 @@ parser code {:
 /* ------------Declaration of Terminals and Non Terminals Section----------- */
 /* Terminals (tokens returned by the scanner). */
 terminal            PLUS, MINUS, TIMES, DIVIDE,  LPAREN, RPAREN, LBRCKT, RBRCKT, EQUALS, GREATER,LESS, PROGRAM, STARTPRG, ENDPRG, READLINE, WRITELINE,DECLINT,DECLFLOAT, E, OU, NAO;
-terminal            IFF, SEMI, THENN,  ELSEE, ENDELSE, ATTRIB, PARA, DE, ATE, PASSO, FACA, FIMPARA, ENQUANTO, FIMENQUANTO ;
+terminal            IFF, SEMI, THENN,  ELSEE, ENDELSE, ATTRIB, PARA, DE, ATE, PASSO, FACA, FIMPARA, ENQUANTO, FIMENQUANTO;
 terminal String	    ID;
 terminal String     INTT;      
 terminal String     FLOATT;
@@ -281,7 +274,7 @@ terminal String     TEXTO;
 terminal String     ESCREVAL;
 
 /* Non terminals */
-non terminal             program, list_command, command, assign , declare_variable, writel, readl,if,elsepart,for,while,print,escreval,final;
+non terminal             program, list_command, command, assign , declare_variable, writel, readl, if, elsepart, for, while, escreval;
 non terminal  String    expr,tipo,vetor;      
 
 /* Precedences */
@@ -312,10 +305,10 @@ command ::=    declare_variable
             |  writel
             |  if
             |  for
-            |  while
-            |  escreval  
-            |  final       
+            |  while     
+            |  escreval       
             ;
+          
 
 tipo ::=      DECLINT:t   {: RESULT = "INT"  ;     :}
             | DECLFLOAT:t {: RESULT = "FLOAT";     :}
@@ -335,21 +328,22 @@ declare_variable ::=  tipo:t  ID:id
 assign		::=   ID:id 
                   ATTRIB 
                   expr:value        {: emit_atribuicao(id,value); :} 
-                  SEMI              {: emit_semi(); :}                           
+                  SEMI              {: emit_semi(); :}                             
                  ;                                   
 
                                                                                     
 writel      ::= WRITELINE
                 expr:value {: emit_escreva(value);  :}                                                   
                 SEMI       {: emit_semi();          :}
-              | WRITELINE
-                TEXTO:txt {: emit_texto(txt);    :}
-                SEMI        {: emit_semi();          :}
+                | WRITELINE
+                TEXTO:txt {: emit_txt(txt); :}
+                SEMI       {: emit_semi(); :}
             ;
-escreval      ::=ESCREVAL
-              TEXTO:txt {:emit_textoN(txt);       :}
-              SEMI       {:emit_semi();           :}
-              ;
+
+escreval    ::= ESCREVAL
+              TEXTO:txt {: emit_escreval(txt); :}
+              SEMI       {: emit_semi(); :}
+            ;
 
 readl      ::= READLINE 
                expr:id       {: emit_leia(id); :}
@@ -378,21 +372,21 @@ while       ::= ENQUANTO expr:value {: emit_while(value); :}
                 FACA                {: emit_startblock();  :}
                 list_command
                 FIMENQUANTO         {:  emit_endblock(); :}
-            ;  
-                         
+            ;                                                       
+                                                                                         
                                                       
 
 expr     ::= expr:e1 PLUS expr:e2         {: RESULT =  e1 + "+" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false));  :}
-	         | expr:e1 MINUS expr:e2        {: RESULT =  e1 + "-" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false)); :}
+	       | expr:e1 MINUS expr:e2        {: RESULT =  e1 + "-" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false)); :}
            | expr:e1 TIMES expr:e2        {: RESULT =  e1 + "*" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false));  :}  
-	         | expr:e1 DIVIDE expr:e2       {: RESULT =  e1 + "/" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false));  :}  
+	       | expr:e1 DIVIDE expr:e2       {: RESULT =  e1 + "/" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false));  :}  
            | expr:e1 EQUALS expr:e2       {: RESULT =  e1 + "==" + e2; dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false));  :}
            | expr:e1 GREATER expr:e2      {: RESULT =  e1 + ">" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false)); :}
            | expr:e1 LESS expr:e2         {: RESULT =  e1 + "<" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false)); :}
            | expr:e1 E expr:e2            {: RESULT =  e1 + "&&" + e2; dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false)); :}
            | expr:e1 OU expr:e2           {: RESULT =  e1 + "||" + e2; dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false)); :}
            | NAO expr:e1                 {: RESULT =   "!" + e1;    ;                    :}
-           | MINUS expr:e1                {:RESULT = "-" + e1;      ;                    :}
+           | MINUS expr:e1               {: RESULT =   "-" + e1;    ;                    :}
            | LPAREN  
              expr:e1                      {: RESULT =  "(" + e1  + ")"; dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,null),false));:} 
              RPAREN   
