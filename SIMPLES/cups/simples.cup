@@ -161,12 +161,13 @@ parser code {:
       format_code(pos);
 
       System.out.print("printf(\"" + txt + "\")");
+
 }
       public void emit_textoN(String txt){
         
         format_code(pos);
+        System.out.print("printf(\"" + txt + "\\n\");");
 
-        System.out.print("printf(\"" + txt + "\\n\")");
       }
 
 
@@ -378,13 +379,7 @@ while       ::= ENQUANTO expr:value {: emit_while(value); :}
                 list_command
                 FIMENQUANTO         {:  emit_endblock(); :}
             ;  
-
-final       ::= FINAL        {:emit_return();:}
-               SEMI          {: emit_semi();:}
-               ;
-
-
-                                                
+                         
                                                       
 
 expr     ::= expr:e1 PLUS expr:e2         {: RESULT =  e1 + "+" + e2;  dicionario.put(RESULT,new TabelaSimbolo(checkExpr(e1,e2),false));  :}

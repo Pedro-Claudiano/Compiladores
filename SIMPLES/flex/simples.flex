@@ -81,14 +81,14 @@ comment =  {commentinicio}{commentbody}{commentfim} | \/\/[a-zA-Z0-9 \t]*
     "e"                {  return symbol(sym.E);        }
     "ou"               {  return symbol(sym.OU);       }
     "escreval"         { return symbol(sym.ESCREVAL);  }
-    "final"             { return symbol(sym.FINAL);    }
  
     {integer}      { return symbol(sym.INTT,yytext()); }
     {float}    { return symbol(sym.FLOATT, yytext()); }
     {identifier}       { return symbol(sym.ID, yytext());} 
     {WhiteSpace}       { /* just skip what was found, do nothing */ }   
     {comment}          { /* just skip what was found, do nothing */ } 
-    {texto}             { return symbol(sym.TEXTO, yytext()); }
+    {texto}             { return symbol(sym.TEXTO, yytext().substring(1, yytext().length() - 1)); }
+
 }
 
 [^]                    { System.err.println("Error: Caracter Ilegal <"+yytext()+"> na linha: " + yyline); }
