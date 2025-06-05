@@ -45,6 +45,7 @@ int main(){
    }
    printf("Ola, Mundo!");
    printf("Ola,Mundo!\n");
+   printf("%d\n",a+b);
    for(i = 10;i > 1;i += -1){   
       printf("\n%d",i);
    }
