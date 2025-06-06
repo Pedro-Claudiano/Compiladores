@@ -8,6 +8,9 @@ inicio
    inteiro f;
    inteiro i;
    flutuante d;
+   inteiro teste[10];
+
+   
 
    leia a;
    leia c;
@@ -59,4 +62,3 @@ inicio
       escreva i;
    fimpara
 fim
-

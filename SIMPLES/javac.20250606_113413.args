@@ -1,0 +1,11 @@
+-d
+/workspace/simples/build/classes
+-classpath
+/workspace/simples/build/classes:/workspace/simples/lib/java-cup-11b-runtime.jar:/workspace/simples/lib/jflex-full-1.7.0.jar
+-sourcepath
+/workspace/simples/src
+-g:none
+/workspace/simples/src/CompiladorSimples.java
+/workspace/simples/src/SimplesLexer.java
+/workspace/simples/src/parser.java
+/workspace/simples/src/sym.java
