@@ -245,7 +245,7 @@ parser code {:
     }
 
    public void emit_while(String value){
-        format_code(pos); 
+        format_code(pos); dfgkjadfgjfbjkqnbjkletnbklnabjqnebnejbjneqjnkbjnkrkrbjklrbqjrbkjljbklrbjklbjklrjbkbkjlrqbkjlr
          TabelaSimbolo t1 = dicionario.get(value);  
       if(t1 == null) {
          report_fatal_error("Variável não declarada [" + value + "]",null);
