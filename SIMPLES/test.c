@@ -8,12 +8,24 @@ int main(){
    int f;
    int i;
    float d;
-   int teste[10];
+   int vteste[10];
+   int cteste[10];
+   int dteste[5+8];
+   int r[10];
+   int va[10];
+   int vb[10];
+   float ff[3];
+   cteste[0]=5;
+   vteste[6]=vteste[4]+cteste[2]-8;
+   for(i = 1;i < 10;i += 1){   
+      scanf("%d",&cteste[i]);
+   }
+   b=8+va[2];
    scanf("%d",&a);
    scanf("%d",&c);
    scanf("%d",&f);
    scanf("%f",&d);
-   b=(a+b)*c/c;
+   b=(a+b)*c/c+va[2];
    f=5+2;
    c=c+f*5;
    printf("\n%d",b);
@@ -36,17 +48,7 @@ int main(){
    while((b>f&&a<1000)||a<f){   
       printf("\n%d",f*10);
       f=f-1;
-      while((b==10)){      
-         printf("\n%d",b);
-         b=b-2;
-      }
    }
-   for(i = 1;i < 10;i += 2){   
-      printf("\n%d",i);
-   }
-   printf("Ola, Mundo!");
-   printf("Ola,Mundo!\n");
-   printf("%d\n",a+b);
    for(i = 10;i > 1;i += -1){   
       printf("\n%d",i);
    }
