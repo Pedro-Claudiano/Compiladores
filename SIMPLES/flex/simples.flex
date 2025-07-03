@@ -54,7 +54,7 @@ comment =  {commentinicio}{commentbody}{commentfim} | \/\/[a-zA-Z0-9 \t]*
     ")"                {  return symbol(sym.RPAREN);   }
     "["                {  return symbol(sym.LBRCKT);   }
     "]"                {  return symbol(sym.RBRCKT);   }
-    "<-"               {  return symbol(sym.ATTRIB);   }
+    "<-"               {  return symbol(sym.ASSIGN);   }
     "="                {  return symbol(sym.EQUALS);   }
     ">"                {  return symbol(sym.GREATER);  }
     "<"                {  return symbol(sym.LESS);     }
@@ -65,11 +65,12 @@ comment =  {commentinicio}{commentbody}{commentfim} | \/\/[a-zA-Z0-9 \t]*
     "fim"              {  return symbol(sym.ENDPRG);   }
     "inteiro"          {  return symbol(sym.DECLINT);  }
     "flutuante"        {  return symbol(sym.DECLFLOAT);}
+    "vazio"            {  return symbol(sym.VOID);     }
     "se"               {  return symbol(sym.IFF);      }
     "entao"            {  return symbol(sym.THENN);    }
     "senao"            {  return symbol(sym.ELSEE);    }
     "fimse"            {  return symbol(sym.ENDELSE);  }
-    "nao"              {  return symbol(sym.NAO);       }
+    "nao"              {  return symbol(sym.NAO);      }
     "para"             {  return symbol(sym.PARA);     }
     "de"               {  return symbol(sym.DE);       }
     "ate"              {  return symbol(sym.ATE);      }
@@ -80,7 +81,10 @@ comment =  {commentinicio}{commentbody}{commentfim} | \/\/[a-zA-Z0-9 \t]*
     "fimenquanto"      {  return symbol(sym.FIMENQUANTO);}
     "e"                {  return symbol(sym.E);        }
     "ou"               {  return symbol(sym.OU);       }
-    "escreval"         { return symbol(sym.ESCREVAL);  }
+    "escreval"         {  return symbol(sym.ESCREVAL); }
+    "procedimento "    {  return symbol(sym.PROCEDURE);}
+    "retorna"          {  return symbol(sym.RETURN);   }
+    ","                {  return symbol(sym.COMMA);    }
     
     {integer}      { return symbol(sym.INTT,yytext()); }
     {float}    { return symbol(sym.FLOATT, yytext()); }
